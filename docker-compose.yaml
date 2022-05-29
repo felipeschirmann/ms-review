@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  review:
+    build: .
+    depends_on:
+      - postgresdb
+    image: felipeschirmann/review:v1.0.1
+    container_name: review
+    environment:
+      ConnectionStrings__MyConnection: Host=postgresdb;Database=pguser;Username=pguser;Password=Pg@123;
+    ports:
+      - 8282:80
+              
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: Pg@123
+      POSTGRES_DB: pguser
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    driver: local
